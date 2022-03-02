@@ -112,6 +112,7 @@ QTLParser_1_MH(vcf = VCF_TIDY, HighBulk = "D2_F2_tt",LowBulk = "D2_F2_TT")
 
 
 #Set High bulk and Low bulk sample names and parser generated file name
+#The file name is generated from the QTLParser_1_MH function in line 119
 
 HighBulk <- "D2_F2_tt"
 LowBulk <- "D2_F2_TT"
@@ -176,7 +177,7 @@ df_filt<-runGprimeAnalysis_MH(
   outlierFilter = "deltaSNP",
   filterThreshold = 0.1)
 
-setwd("/home/michael/Desktop/SorghumQTL/GPrimeDistributionPlots/")
+
 
 
 
@@ -203,7 +204,7 @@ df_filt2 <- runQTLseqAnalysis_MH(
   intervals = c(95, 99)
 )
 
-setwd("/home/michael/Desktop/SorghumQTL/nSNPs/")
+
 
 #make the Plot
 snpnumber <- plotQTLStats(SNPset = df_filt2, var = "nSNPs")
@@ -228,7 +229,7 @@ neglog
 
 
 #export summary CSV
-setwd("/home/michael/Desktop/SorghumQTL/PeakSummary/")
+
 QTLTable <- getQTLTable(SNPset = df_filt, alpha = 0.01, export = TRUE, fileName = "my_BSA_QTL.csv")
 write.csv(QTLTable, file = "QTLTablePeaks.csv", row.names = FALSE, col.names = TRUE)
 Table4 <- read.table(file = "QTLTablePeaks.csv",header = TRUE, sep = ",", fill=TRUE)
