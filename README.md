@@ -236,4 +236,10 @@ Table4 <- read.table(file = "QTLTablePeaks.csv",header = TRUE, sep = ",", fill=T
 ```
 
 
+```{r AlleleFreq,warning=FALSE}
+#Use the function to plot allele frequencies per chromosome
+Obs_Allele_Freq(SNPSet = df_filt)
+##Use the function to investigate chromosomal region of interest
+Obs_Allele_Freq2(SNPSet = df_filt, ChromosomeValue = 4, threshold = .90)
+```
 
