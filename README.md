@@ -241,5 +241,7 @@ Table4 <- read.table(file = "QTLTablePeaks.csv",header = TRUE, sep = ",", fill=T
 Obs_Allele_Freq(SNPSet = df_filt)
 ##Use the function to investigate chromosomal region of interest
 Obs_Allele_Freq2(SNPSet = df_filt, ChromosomeValue = 4, threshold = .90)
-```
+```![FREQ1](https://user-images.githubusercontent.com/93121277/156783048-88f98c3c-4c89-4519-bf1b-7ed15b6b5dea.png)
+![FREQ2](https://user-images.githubusercontent.com/93121277/156783062-241f784c-914d-4713-bed2-7a3c9d25fe66.png)
+
 
