@@ -183,7 +183,8 @@ df_filt<-runGprimeAnalysis_MH(
   filterThreshold = 0.1)
 
 
-
+#Plot G Statistic Distribution
+hist(df_filt2$G,breaks = 950,xlim = c(0,10),xlab = "G Distribution",main = "Histogram of G Values")
 
 
 # G' Distribution Plot
@@ -195,6 +196,8 @@ plotGprimeDist(SNPset = df_filt, outlierFilter = "deltaSNP",filterThreshold = 0.
 ggsave(filename = "DeltaSNP.png",plot = last_plot())
 
 ```
+![Gstat](https://user-images.githubusercontent.com/93121277/156784882-f70f2144-88dd-4a87-ab6e-8a04a31c7fe1.png)
+
 
 
 ```{r QTLSEQ, warning = FALSE}
@@ -239,6 +242,8 @@ QTLTable <- getQTLTable(SNPset = df_filt, alpha = 0.01, export = TRUE, fileName 
 write.csv(QTLTable, file = "QTLTablePeaks.csv", row.names = FALSE, col.names = TRUE)
 Table4 <- read.table(file = "QTLTablePeaks.csv",header = TRUE, sep = ",", fill=TRUE)
 ```
+![Gprime](https://user-images.githubusercontent.com/93121277/156785067-1253709f-b19d-4326-a4c3-8db8abf33052.png)
+
 
 
 ```{r AlleleFreq,warning=FALSE}
