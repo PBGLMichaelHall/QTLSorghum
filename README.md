@@ -156,7 +156,7 @@ ggsave(filename = "Ref_Freq_Histogram.png",plot = last_plot())
 ```
 ![hist1](https://user-images.githubusercontent.com/93121277/156784148-b6dd7492-3618-46bd-9f77-d754e6e70306.png)
 ![hist2](https://user-images.githubusercontent.com/93121277/156784231-dd3c4991-e0ee-4a5e-9e41-9cf5a46b6df1.png)
-
+![hist34](https://user-images.githubusercontent.com/93121277/156784666-7abcc556-e0ef-4b4b-b981-c97074fccb0c.png)
 ![hist4](https://user-images.githubusercontent.com/93121277/156784371-a96fcac0-fe21-43de-ad6c-568c69e3d25a.png)
 
 
