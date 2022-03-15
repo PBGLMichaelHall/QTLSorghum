@@ -79,13 +79,13 @@ SNP distributions, relative allele frequencies, G’ values, and
 log10(p-values), enabling identification and plotting of QTL.
 
 # Examples:
-```{r setup, include=FALSE}
+``` r {r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,comment = NA)
 ```
 
 
 
-```{r libraries}
+``` r {r libraries}
 devtools::install_github("PBGLMichaelHall/QTLseqr",force = TRUE)
 library(QTLseqr)
 library(tinytex)
@@ -96,7 +96,7 @@ library(ggplot2)
 ```
 
 
-```{r main, warning=FALSE,message=FALSE,comment=NA}
+``` r {r main, warning=FALSE,message=FALSE,comment=NA}
 
 #Set Working Directory
 setwd("/home/michael/Desktop/QTLseqr/extdata")
@@ -150,10 +150,8 @@ ggplot(data = df) +
   geom_histogram(aes(x = REF_FRQ))
 ggsave(filename = "Ref_Freq_Histogram.png",plot = last_plot())
 
-
-
-
 ```
+
 ![hist1](https://user-images.githubusercontent.com/93121277/156784148-b6dd7492-3618-46bd-9f77-d754e6e70306.png)
 ![hist2](https://user-images.githubusercontent.com/93121277/156784231-dd3c4991-e0ee-4a5e-9e41-9cf5a46b6df1.png)
 ![hist34](https://user-images.githubusercontent.com/93121277/156784666-7abcc556-e0ef-4b4b-b981-c97074fccb0c.png)
@@ -161,7 +159,7 @@ ggsave(filename = "Ref_Freq_Histogram.png",plot = last_plot())
 
 
 
-```{r Filtering, warning = FALSE}
+``` r {r Filtering, warning = FALSE}
 
 #Filter SNPs based on some criteria
 df_filt <-
@@ -200,7 +198,7 @@ ggsave(filename = "DeltaSNP.png",plot = last_plot())
 
 
 
-```{r QTLSEQ, warning = FALSE}
+``` r {r QTLSEQ, warning = FALSE}
 
 #Run QTLseq analysis
 df_filt2 <- runQTLseqAnalysis_MH(
@@ -246,7 +244,7 @@ Table4 <- read.table(file = "QTLTablePeaks.csv",header = TRUE, sep = ",", fill=T
 
 
 
-```{r AlleleFreq,warning=FALSE}
+``` r {r AlleleFreq,warning=FALSE}
 #Use the function to plot allele frequencies per chromosome
 Obs_Allele_Freq(SNPSet = df_filt)
 ##Use the function to investigate chromosomal region of interest
