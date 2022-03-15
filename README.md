@@ -223,15 +223,33 @@ setwd("/home/michael/Desktop/SorghumQTL/DeltaSNP/")
 deltaSNP<-plotQTLStats(SNPset = df_filt2, var = "deltaSNP", plotIntervals  = TRUE)
 ggsave(filename = "DeltaSNPInterval.png",plot = last_plot())
 setwd("/home/michael/Desktop/SorghumQTL/negLog10Pval/")
-neglog<-plotQTLStats(SNPset = df_filt2, var = "negLog10Pval",plotThreshold = TRUE,q=0.01,subset = c("1","3","4","6"))
+neglog<-plotQTLStats(SNPset = df_filt2, var = "negLog10Pval",plotThreshold = TRUE,q=0.01)
 ggsave(filename = "negLog10Pval.png",plot = last_plot())
 Gprime2<-plotQTLStats(SNPset = df_filt2, var = "Gprime",plotThreshold = TRUE,q=0.01,subset = c("1","3","4","6"))
-#plot the plots
+#plotiing snps per Chromosome
 snpnumber
+
+```
+![snps](https://user-images.githubusercontent.com/93121277/158374828-5878811f-20c0-449c-8ac3-10d195bd3375.png)
+
+
+
 Gprime
+
+![Gprime](https://user-images.githubusercontent.com/93121277/156785067-1253709f-b19d-4326-a4c3-8db8abf33052.png)
+
 Gprime2
+
+![Gprime2](https://user-images.githubusercontent.com/93121277/158375088-768456af-870e-4ec3-9427-900ce6aa8ea7.png)
+
 deltaSNP
+
+![deltasnp](https://user-images.githubusercontent.com/93121277/158375244-b509026f-8f57-4368-a18e-93711afe8661.png)
+
 neglog
+
+![neglog](https://user-images.githubusercontent.com/93121277/158375824-99eefc2d-1d09-4a25-926d-7a1d4a0e1340.png)
+
 
 
 #export summary CSV
@@ -240,7 +258,7 @@ QTLTable <- getQTLTable(SNPset = df_filt, alpha = 0.01, export = TRUE, fileName 
 write.csv(QTLTable, file = "QTLTablePeaks.csv", row.names = FALSE, col.names = TRUE)
 Table4 <- read.table(file = "QTLTablePeaks.csv",header = TRUE, sep = ",", fill=TRUE)
 ```
-![Gprime](https://user-images.githubusercontent.com/93121277/156785067-1253709f-b19d-4326-a4c3-8db8abf33052.png)
+
 
 
 
