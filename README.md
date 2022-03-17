@@ -269,7 +269,6 @@ Table4 <- read.table(file = "QTLTablePeaks.csv",header = TRUE, sep = ",", fill=T
 ```
 # Preview the Summary QTL
 
-![tabler](https://user-images.githubusercontent.com/93121277/158790655-36f4f120-4349-4647-a676-049ddf21c879.png)
 
 ``` r {r AlleleFreq,warning=FALSE}
 #Use the function to plot allele frequencies per chromosome
@@ -501,7 +500,7 @@ write.csv(QTLTable, file = "QTLTablePeaks.csv", row.names = FALSE, col.names = T
 Table4 <- read.table(file = "QTLTablePeaks.csv",header = TRUE, sep = ",", fill=TRUE)
 ```
 # Preview the QTL Summary
-![summary](https://user-images.githubusercontent.com/93121277/158788071-ec6731bc-0376-4302-8ac4-166783953d12.png)
+
 
 
 ```r
