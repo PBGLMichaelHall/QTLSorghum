@@ -17,5 +17,6 @@ dependencies:
   - r-tinytex
   - r-ggrepel
   - r-ggpubr
+  - r-rpy2
 
 
