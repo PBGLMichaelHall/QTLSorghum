@@ -79,9 +79,6 @@ SNP distributions, relative allele frequencies, G’ values, and
 log10(p-values), enabling identification and plotting of QTL.
 
 # Examples:
-``` r {r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,comment = NA)
-```
 
 
 
