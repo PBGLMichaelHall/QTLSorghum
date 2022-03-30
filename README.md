@@ -80,9 +80,14 @@ log10(p-values), enabling identification and plotting of QTL.
 
 # Examples:
 
+# Load/install libraries
 
 
 ``` r {r libraries}
+# install.packages("tinytex")
+# install.packages("vcfR")
+# install.packages("tidyr")
+# install.packages("ggplot2")
 devtools::install_github("PBGLMichaelHall/QTLseqr",force = TRUE)
 library(QTLseqr)
 library(tinytex)
@@ -91,27 +96,45 @@ library(tidyr)
 library(ggplot2)
 
 ```
+# Set the Working Directory to where VCF file is stored in file system
 
-
-``` r {r main, warning=FALSE,message=FALSE,comment=NA}
-
-#Set Working Directory
+``` r 
 setwd("/home/michael/Desktop/QTLseqr/extdata")
-
-#vcf file must only contain bialleleic variants. (filter upstream, e.g., with bcftools view -m2 -M2), also the QTLseqR functions will only take SNPS, ie, length of REF and ALT== 1
+```
+# Vcf file must only contain bialleleic variants. (filter upstream, e.g., with bcftools view -m2 -M2), also the QTLseqR functions will only take SNPS, ie, length of REF and ALT== 1
+```r
 vcf <- read.vcfR(file = "freebayes_D2.filtered.vcf")
+```
+
+
+![Screenshot from 2022-03-30 15-12-19](https://user-images.githubusercontent.com/93121277/160842876-d35bcbdf-c487-42ad-ac92-01f98f436eea.png)
+
+```r
 
 #Convert to tidy data frame
 VCF_TIDY <- vcfR2tidy(vcf)
 ```
 
+![Screenshot from 2022-03-30 15-18-37](https://user-images.githubusercontent.com/93121277/160843944-e37e77e9-acb4-401f-95eb-f75f894e953f.png)
 
 # Call the Parser
 ```r
-QTLParser_1_MH(vcf = VCF_TIDY, HighBulk = "D2_F2_tt",LowBulk = "D2_F2_TT")
+QTLParser_1_MH(vcf = VCF_TIDY, HighBulk = "D2_F2_tt",LowBulk = "D2_F2_TT", filename = Hall)
 ```
+![Screenshot from 2022-03-30 15-10-38](https://user-images.githubusercontent.com/93121277/160842389-5d1d3915-c652-4fa4-a0a4-2829d04ad9a0.png)
+
+
 # Preview the CSV file
 ![mcsv](https://user-images.githubusercontent.com/93121277/158783968-db377510-7852-4359-a48f-afb34b8efb5a.png)
+
+# Invoke unique command to extract Sample names reverse comapatible to the VCF
+
+```r
+unique(VCF_TIDY$gt$Indiv)
+```
+![Screenshot from 2022-03-30 15-33-29](https://user-images.githubusercontent.com/93121277/160846874-b44284ed-9eb5-44a7-9ef0-65a5819e182e.png)
+
+
 
 ```r
 #Set High bulk and Low bulk sample names and parser generated file name
@@ -121,10 +144,9 @@ HighBulk <- "D2_F2_tt"
 LowBulk <- "D2_F2_TT"
 file <- "Hall.csv"
 
-#Choose which chromosomes will be included in the analysis,
-#the tidy data frame makes a CHROMKEY so no need to change chromosome names
-Chroms <- 1:10
+#Choose which chromosomes/contigs will be included in the analysis,
 
+Chroms <- c("Chr01","Chr02","Chr03","Chr04","Chr05","Chr06","Chr07","Chr08","Chr09","Chr10")
 
 df <-
   importFromTable(
@@ -134,29 +156,30 @@ df <-
     chromList = Chroms
   ) 
 
+```
+![Screenshot from 2022-03-30 15-38-14](https://user-images.githubusercontent.com/93121277/160847939-5d0feb2d-8d54-4d59-949d-be1939df8de2.png)
 
+# Inspect the head of the df object
+![Screenshot from 2022-03-30 15-41-45](https://user-images.githubusercontent.com/93121277/160848653-41ab84f1-1d37-49aa-9bd4-ea1319704c8f.png)
+
+
+```r
 #plot histograms associated with filtering arguments to determine if cut off values are appropriate
 
 
 
-ggplot(data = df) +
-  geom_histogram(aes(x = AD_ALT.LOW + AD_ALT.HIGH)) + xlim(0,400)
 
-ggsave(filename = "AD_Histogram.png",plot = last_plot())
-ggplot(data = df) +
-  geom_histogram(aes(x = AD_REF.LOW + AD_REF.HIGH)) + xlim(0,400)
-ggsave(filename = "AD_Ref_Histogram.png",plot = last_plot())
-ggplot(data =df) +
-  geom_histogram(aes(x = DP.LOW + DP.HIGH)) + xlim(0,400)
+ggplot(data =df) + geom_histogram(aes(x = DP.LOW + DP.HIGH)) + xlim(0,400)
+
 ggsave(filename = "Depth_Histogram.png",plot=last_plot())
-ggplot(data = df) +
-  geom_histogram(aes(x = REF_FRQ))
+
+ggplot(data = df) + geom_histogram(aes(x = REF_FRQ))
+
 ggsave(filename = "Ref_Freq_Histogram.png",plot = last_plot())
 
 ```
 
-![hist1](https://user-images.githubusercontent.com/93121277/156784148-b6dd7492-3618-46bd-9f77-d754e6e70306.png)
-![hist2](https://user-images.githubusercontent.com/93121277/156784231-dd3c4991-e0ee-4a5e-9e41-9cf5a46b6df1.png)
+
 ![hist34](https://user-images.githubusercontent.com/93121277/156784666-7abcc556-e0ef-4b4b-b981-c97074fccb0c.png)
 ![hist4](https://user-images.githubusercontent.com/93121277/156784371-a96fcac0-fe21-43de-ad6c-568c69e3d25a.png)
 
