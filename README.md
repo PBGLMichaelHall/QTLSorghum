@@ -164,14 +164,17 @@ df <-
 
 
 ```r
-#plot histograms associated with filtering arguments to determine if cut off values are appropriate
-
-
-
+#plot histograms associated with filtering arguments such as mamximum and minumum Total Depths and reference Allele Frequency to determine cut off values 
 
 ggplot(data =df) + geom_histogram(aes(x = DP.LOW + DP.HIGH)) + xlim(0,400)
 
 ggsave(filename = "Depth_Histogram.png",plot=last_plot())
+
+```
+
+![hist34](https://user-images.githubusercontent.com/93121277/156784666-7abcc556-e0ef-4b4b-b981-c97074fccb0c.png)
+
+```r
 
 ggplot(data = df) + geom_histogram(aes(x = REF_FRQ))
 
@@ -179,8 +182,6 @@ ggsave(filename = "Ref_Freq_Histogram.png",plot = last_plot())
 
 ```
 
-
-![hist34](https://user-images.githubusercontent.com/93121277/156784666-7abcc556-e0ef-4b4b-b981-c97074fccb0c.png)
 ![hist4](https://user-images.githubusercontent.com/93121277/156784371-a96fcac0-fe21-43de-ad6c-568c69e3d25a.png)
 
 
@@ -197,7 +198,11 @@ df_filt <-
     minSampleDepth = 40,
     #    minGQ = 0
   )
+```
+![Screenshot from 2022-04-01 08-29-37](https://user-images.githubusercontent.com/93121277/161207708-a50c7061-94ce-4729-b764-417bdb488d32.png)
 
+
+```r
 
 #Run G' analysis
 df_filt<-runGprimeAnalysis_MH(
@@ -205,22 +210,26 @@ df_filt<-runGprimeAnalysis_MH(
   windowSize = 5000000,
   outlierFilter = "deltaSNP",
   filterThreshold = 0.1)
-
-
-#Plot G Statistic Distribution
-hist(df_filt2$G,breaks = 950,xlim = c(0,10),xlab = "G Distribution",main = "Histogram of G Values")
-
+```
+![Screenshot from 2022-04-01 08-31-03](https://user-images.githubusercontent.com/93121277/161207885-45119458-fa34-4259-80be-a8cd2f30fb3c.png)
 
 # G' Distribution Plot
+```r
+#The plot reveals a skewed G Prime statistic with a really small variance. Perhaps it is due to the small number of variants called.
+#In addition, Hampels outlier filter in the second argument, can also be changed to "deltaSNP"
 plotGprimeDist(SNPset = df_filt, outlierFilter = "Hampel")
-ggsave(filename = "Hampel_GPrime.png",plot = last_plot())
+```
+![Screenshot from 2022-04-01 08-53-51](https://user-images.githubusercontent.com/93121277/161211346-780ed554-5fa6-4d22-bada-d446714c06aa.png)
 
-setwd("/home/michael/Desktop/SorghumQTL/DeltaSNP/")
-plotGprimeDist(SNPset = df_filt, outlierFilter = "deltaSNP",filterThreshold = 0.1)
-ggsave(filename = "DeltaSNP.png",plot = last_plot())
+```r
+#We can see raw data before and after our filtering step
+plotGprimeDist_MH(SNPset = df_filt, outlierFilter = "deltaSNP",filterThreshold = 0.1)
+```
+![Screenshot from 2022-04-01 08-59-04](https://user-images.githubusercontent.com/93121277/161212125-9daf552a-ddb1-4a50-8603-08adbf21a869.png)
+
 
 ```
-![Gstat](https://user-images.githubusercontent.com/93121277/156784882-f70f2144-88dd-4a87-ab6e-8a04a31c7fe1.png)
+
 
 
 
@@ -236,46 +245,59 @@ df_filt2 <- runQTLseqAnalysis_MH(
   intervals = c(95, 99)
 )
 
+```
+![Screenshot from 2022-04-01 08-39-28](https://user-images.githubusercontent.com/93121277/161209279-3bd76a3c-97d4-44f0-801d-c5c3e7ba1942.png)
 
 
-#make the Plot
-snpnumber <- plotQTLStats(SNPset = df_filt2, var = "nSNPs")
+# Plot G Statistic Distribution
+
+```r
+hist(df_filt2$G,breaks = 950,xlim = c(0,10),xlab = "G Distribution",main = "Histogram of G Values")
+```
+
+![Screenshot from 2022-04-01 08-44-38](https://user-images.githubusercontent.com/93121277/161209927-59cd31d5-5663-4d0b-9d7d-ae6ee64a180d.png)
+
+
+
+```r
+#Plot Snps as a function of chromosome and position values
+plotQTLStats(SNPset = df_filt2, var = "nSNPs")
 ggsave(filename = "nSNPs.png",plot = last_plot())
-
-setwd("/home/michael/Desktop/SorghumQTL/GPrimeDistributionPlots/")
-Gprime<-plotQTLStats(SNPset = df_filt, var = "Gprime", plotThreshold = TRUE, q = 0.01)
-ggsave(filename = "GPrime.png",plot = last_plot())
-setwd("/home/michael/Desktop/SorghumQTL/DeltaSNP/")
-deltaSNP<-plotQTLStats(SNPset = df_filt2, var = "deltaSNP", plotIntervals  = TRUE)
-ggsave(filename = "DeltaSNPInterval.png",plot = last_plot())
-setwd("/home/michael/Desktop/SorghumQTL/negLog10Pval/")
-neglog<-plotQTLStats(SNPset = df_filt2, var = "negLog10Pval",plotThreshold = TRUE,q=0.01)
-ggsave(filename = "negLog10Pval.png",plot = last_plot())
-Gprime2<-plotQTLStats(SNPset = df_filt2, var = "Gprime",plotThreshold = TRUE,q=0.01,subset = c("1","3","4","6"))
-#plotiing snps per Chromosome
-snpnumber
-
 ```
 ![snps](https://user-images.githubusercontent.com/93121277/158374828-5878811f-20c0-449c-8ac3-10d195bd3375.png)
 
-
-
-Gprime
-
+```r
+#Using QTLStats funciton plot Gprime Statistic with False Discovery Rate Threhshold as a third argument boolean operator as TRUE. The q value is used as FDR threshold null value is 0.05%.
+plotQTLStats(SNPset = df_filt, var = "Gprime", plotThreshold = TRUE, q = 0.01)
+ggsave(filename = "GPrime.png",plot = last_plot())
+```
 ![Gprime](https://user-images.githubusercontent.com/93121277/156785067-1253709f-b19d-4326-a4c3-8db8abf33052.png)
 
-Gprime2
 
-![Gprime2](https://user-images.githubusercontent.com/93121277/158375088-768456af-870e-4ec3-9427-900ce6aa8ea7.png)
-
-deltaSNP
+```r
+#Again using plotQTLStats change second argument varaible to deltaSNP and plot.
+plotQTLStats(SNPset = df_filt2, var = "deltaSNP", plotIntervals  = TRUE)
+ggsave(filename = "DeltaSNPInterval.png",plot = last_plot())
+```
 
 ![deltasnp](https://user-images.githubusercontent.com/93121277/158375244-b509026f-8f57-4368-a18e-93711afe8661.png)
 
-neglog
+```r
+#Finally with plotQTLStats plot negLog10Pval
+plotQTLStats(SNPset = df_filt2, var = "negLog10Pval",plotThreshold = TRUE,q=0.01)
+ggsave(filename = "negLog10Pval.png",plot = last_plot())
+```
 
 ![neglog](https://user-images.githubusercontent.com/93121277/158375824-99eefc2d-1d09-4a25-926d-7a1d4a0e1340.png)
 
+```r
+#Add subset argument to focus on particular chromosomes one, three, four, and six.
+#The reason is due to signficant QTL regions
+plotQTLStats(SNPset = df_filt2, var = "Gprime",plotThreshold = TRUE,q=0.01,subset = c("1","3","4","6"))
+
+```
+
+![Gprime2](https://user-images.githubusercontent.com/93121277/158375088-768456af-870e-4ec3-9427-900ce6aa8ea7.png)
 
 
 # Export summary CSV
@@ -283,12 +305,11 @@ neglog
 
 
 ```r
-QTLTable <- getQTLTable(SNPset = df_filt, alpha = 0.01, export = TRUE, fileName = "my_BSA_QTL.csv")
-write.csv(QTLTable, file = "QTLTablePeaks.csv", row.names = FALSE, col.names = TRUE)
-Table4 <- read.table(file = "QTLTablePeaks.csv",header = TRUE, sep = ",", fill=TRUE)
+QTLTable(SNPset = df_filt, alpha = 0.01, export = TRUE, fileName = "my_BSA_QTL.csv")
 ```
 # Preview the Summary QTL
 
+![Screenshot from 2022-04-01 09-18-54](https://user-images.githubusercontent.com/93121277/161214771-b0ded302-846c-43c9-a8a4-a87b97423f63.png)
 
 ``` r {r AlleleFreq,warning=FALSE}
 #Use the function to plot allele frequencies per chromosome
@@ -313,6 +334,7 @@ Obs_Allele_Freq2(SNPSet = df_filt, ChromosomeValue = 4, threshold = .90)
 
 ![freq2](https://user-images.githubusercontent.com/93121277/158391011-7fcc46ae-bc6f-4f48-a11d-24ff59b8bdbe.png)
 
+################################################################################################################################################
 
 # Rice QTL Analysis: High Bulk sample size of 430 Tolerant to cold environments and Low Bulk sample size of 385 Suseptilble to cold environments
 ```r
@@ -324,13 +346,28 @@ setwd("/home/michael/Desktop/RiceCold2")
 #vcf file must only contain bialleleic variants. (filter upstream, e.g., with bcftools view -m2 -M2), also the QTL-Rice-Cold functions will only take SNPS, ie, length of REF and ALT== 1
 vcf <- read.vcfR(file = "wGQ-Filt-freebayes~bwa~IRGSP-1.0~both-segregant_bulks~filtered-default.vcf.gz")
 
+```
+![Screenshot from 2022-04-01 09-27-24](https://user-images.githubusercontent.com/93121277/161215916-c3328eaf-721b-4778-940a-e356fe60e9ca.png)
+
+```r
 #Convert to tidy data frame
 VCF_TIDY <- vcfR2tidy(vcf)
+```
+![Screenshot from 2022-04-01 09-37-35](https://user-images.githubusercontent.com/93121277/161217479-f8a99317-1dec-4b7b-a7de-04d488abbdf0.png)
 
+```r
 #Call the Parser
-QTLParser_1_MH(vcf = VCF_TIDY, HighBulk = "ET-pool-385",LowBulk = "ES-pool-430")
+QTLParser_1_MH(vcf = VCF_TIDY, HighBulk = "ET-pool-385",LowBulk = "ES-pool-430", filename = "Hall")
+```
+# Standard Parser Output makes a list of Chromosome as named in VCF file
+![Screenshot from 2022-04-01 09-41-00](https://user-images.githubusercontent.com/93121277/161218164-169207c9-7039-4857-9066-f59f07c206b7.png)
+# Also find unique sample names reverse compatible with VCF file
+```r
+unique(VCF_TIDY$gt$Indiv)
+```
+![Screenshot from 2022-04-01 09-42-58](https://user-images.githubusercontent.com/93121277/161218336-79ca6524-e2ba-47fd-bbd8-68125bdd966b.png)
 
-
+```r
 #Set High bulk and Low bulk sample names and parser generated file name
 
 HighBulk <- "ET-pool-385"
@@ -338,13 +375,14 @@ LowBulk <- "ES-pool-430"
 file <- "Hall.csv"
 ```
 # Preview the CSV file
-![csv](https://user-images.githubusercontent.com/93121277/158783309-96b56b84-18f7-4221-b3b2-58ffee1be281.png)
+
+![Screenshot from 2022-04-01 10-33-41](https://user-images.githubusercontent.com/93121277/161226740-5b648928-97bd-40e4-8622-e8f845bbe271.png)
 
 
 ```r
-#Choose which chromosomes will be included in the analysis,
-#the tidy data frame makes a CHROMKEY so no need to change chromosome names
-Chroms <- 1:12
+#Input chromosomes values which will be included in the analysis,
+Chroms <- c("NC_029256.1","NC_029257.1","NC_029258.1","NC_029259.1","NC_029260.1","NC_029261.1","NC_029262.1","NC_029263.1","NC_029264.1","NC_029265.1","NC_029266.1","NC_029267.1")
+
 
 
 df <-
@@ -355,26 +393,16 @@ df <-
     chromList = Chroms
   ) 
 
-
-#plot histograms associated with filtering arguments to determine if cut off values are appropriate
-
-
-
-ggplot(data = df) +geom_histogram(aes(x = AD_ALT.LOW + AD_ALT.HIGH)) + xlim(0,400)
-ggsave(filename = "AD_Histogram.png",plot = last_plot())
 ```
 
-![altlowhigh](https://user-images.githubusercontent.com/93121277/158780030-405d4137-d84e-40e5-a994-c2afd82844ef.png)
+![Screenshot from 2022-04-01 10-35-10](https://user-images.githubusercontent.com/93121277/161226938-8f50aa1b-27b4-4fe1-9b77-b06d14ec8b31.png)
 
 
-```r
 
-ggplot(data = df) +geom_histogram(aes(x = AD_REF.LOW + AD_REF.HIGH)) + xlim(0,400)
-ggsave(filename = "AD_Ref_Histogram.png",plot = last_plot())
+# Plot histograms associated with filtering arguments to determine if cut off values are appropriate
 
-```
 
-![reflow](https://user-images.githubusercontent.com/93121277/158780242-92fa67d2-1929-450a-ae57-5868938c8349.png)
+
 
 ```r
 
@@ -408,8 +436,13 @@ df_filt <-
     minSampleDepth = 40,
     #    minGQ = 0
   )
+  
+  ```
+  
+  ![Screenshot from 2022-04-01 09-54-07](https://user-images.githubusercontent.com/93121277/161220139-0c079197-99db-4292-949a-cd23d0e2e7c7.png)
 
 
+```r
 #Run G' analysis
 df_filt<-runGprimeAnalysis_MH(
   SNPset = df_filt,
@@ -419,6 +452,7 @@ df_filt<-runGprimeAnalysis_MH(
 
 
 ```
+![Screenshot from 2022-04-01 09-54-50](https://user-images.githubusercontent.com/93121277/161220373-00be3d7e-b67d-44ca-a1af-5c4670751f39.png)
 
 
 ```r
@@ -434,11 +468,12 @@ df_filt2 <- runQTLseqAnalysis_MH(
   intervals = c(95, 99)
 )
 
+```
+![Screenshot from 2022-04-01 09-56-09](https://user-images.githubusercontent.com/93121277/161220504-ba5f8e90-126f-4ee7-9a1d-06d5e09e6a94.png)
 
-
-#Plot G Statistic Distribution
+# Plot G Statistic Distribution
+```r
 hist(df_filt2$G,breaks = 950,xlim = c(0,10),xlab = "G Distribution",main = "Histogram of G Values")
-
 ```
 ![gstat](https://user-images.githubusercontent.com/93121277/158780626-0dd9efaa-8c2b-448e-8e22-ce94a1ff6fbf.png)
 
@@ -469,59 +504,61 @@ ggsave(filename = "DeltaSNP.png",plot = last_plot())
 
 
 #make the Plot
-snpnumber <- plotQTLStats(SNPset = df_filt2, var = "nSNPs")
+plotQTLStats(SNPset = df_filt2, var = "nSNPs")
 ggsave(filename = "nSNPs.png",plot = last_plot())
-snpnumber
+
 
 ```
-![snps9](https://user-images.githubusercontent.com/93121277/158781092-45cd72ca-ca9d-4b52-8a94-d0202ba7d6a9.png)
+![Screenshot from 2022-04-01 10-36-37](https://user-images.githubusercontent.com/93121277/161227187-9a3d3138-e996-4965-9659-6a879d0be70a.png)
+
+
 
 ```
 
 
 ```r
-Gprime<-plotQTLStats(SNPset = df_filt, var = "Gprime", plotThreshold = TRUE, q = 0.01)
+plotQTLStats(SNPset = df_filt, var = "Gprime", plotThreshold = TRUE, q = 0.01)
 ggsave(filename = "GPrime.png",plot = last_plot())
 
 ```
 
-![GPrime](https://user-images.githubusercontent.com/93121277/158781260-207f2f26-85b7-424e-9c54-df7b65784283.png)
+![Screenshot from 2022-04-01 10-37-50](https://user-images.githubusercontent.com/93121277/161227403-aa546c4a-c6f0-4c3c-8c25-485bae654739.png)
+
 
 ```r
-deltaSNP<-plotQTLStats(SNPset = df_filt2, var = "deltaSNP", plotIntervals  = TRUE)
+plotQTLStats(SNPset = df_filt2, var = "deltaSNP", plotIntervals  = TRUE)
 ggsave(filename = "DeltaSNPInterval.png",plot = last_plot())
-deltaSNP
+
 ```
-![deltaSNP8](https://user-images.githubusercontent.com/93121277/158781414-bf2d0243-01bf-4cfb-a053-7fac67d895b4.png)
+![Screenshot from 2022-04-01 10-39-24](https://user-images.githubusercontent.com/93121277/161227673-447d11f9-1245-4042-affd-56ca43c39799.png)
+
+
 
 
 
 ```r
-neglog<-plotQTLStats(SNPset = df_filt2, var = "negLog10Pval",plotThreshold = TRUE,q=0.01,subset = c("1","2","8","10"))
+plotQTLStats(SNPset = df_filt2, var = "negLog10Pval",plotThreshold = TRUE,q=0.01,subset = c("NC_029256.1","NC_029257.1","NC_029263.1","NC_029265.1"))
 ggsave(filename = "negLog10Pval.png",plot = last_plot())
-neglog
+
 ```
-![neglog'](https://user-images.githubusercontent.com/93121277/158781581-badbc13f-405e-4ff7-8fe8-68b91f421811.png)
+![Screenshot from 2022-04-01 10-05-35](https://user-images.githubusercontent.com/93121277/161222325-69f4ad58-8fb8-4eb7-bc91-fc900be47416.png)
+
 
 ```r
 
-Gprime2<-plotQTLStats(SNPset = df_filt2, var = "Gprime",plotThreshold = TRUE,q=0.01,subset = c("1","2","8","10"))
-Gprime2
-```
+plotQTLStats(SNPset = df_filt2, var = "Gprime",plotThreshold = TRUE,q=0.01,subset = c("NC_029256.1","NC_029257.1","NC_029263.1","NC_029265.1"))
 
-![Gprime22](https://user-images.githubusercontent.com/93121277/158781815-8700bad5-fc58-4ce6-a2fe-72ecba9d66cd.png)
+```
+![Screenshot from 2022-04-01 10-06-19](https://user-images.githubusercontent.com/93121277/161222339-dbbafc12-0631-4d22-b477-5f038256ee6e.png)
 
 
 # Export summary CSV
 ```r
 
-QTLTable <- getQTLTable(SNPset = df_filt2, alpha = 0.01, export = TRUE, fileName = "my_BSA_QTL.csv")
-write.csv(QTLTable, file = "QTLTablePeaks.csv", row.names = FALSE, col.names = TRUE)
-Table4 <- read.table(file = "QTLTablePeaks.csv",header = TRUE, sep = ",", fill=TRUE)
+getQTLTable(SNPset = df_filt2, alpha = 0.01, export = TRUE, fileName = "my_BSA_QTL.csv")
 ```
 # Preview the QTL Summary
-
-
+![Screenshot from 2022-04-01 09-58-43](https://user-images.githubusercontent.com/93121277/161220947-979d5bbf-8438-4110-a950-a33224878a01.png)
 
 ```r
 
@@ -549,19 +586,5 @@ Obs_Allele_Freq2(SNPSet = df_filt, ChromosomeValue = 8, threshold = .75)
 ![header](https://user-images.githubusercontent.com/93121277/158789386-a163d764-607b-4a4c-8884-11ce4a9debb0.png)
 ![values](https://user-images.githubusercontent.com/93121277/158789420-806f5cfe-ed44-48b7-80fa-f738eaf7a5e8.png)
 
-
-```r
-
-
-obs_MH(SNPSet = df_filt2, ChromosomeValue1 = 1,ChromosomeValue2 = 2,ChromosomeValue3 = 8,ChromosomeValue4 = 10, threshold = .01)
-for(i in 1:12){
-  obs_MH(SNPSet = df_filt2, ChromosomeValue1 = i,ChromosomeValue2 = i,ChromosomeValue3 = i,ChromosomeValue4 = i, threshold = .01)
-}
-
-```
-
-# From the function I choose A few plots to show an interesting relationship between High Bulk allelic depth frequencies and Gprime Values
-
-![Screenshot from 2022-03-17 11-26-49](https://user-images.githubusercontent.com/93121277/158790139-43e3e639-08d6-4c6a-8cc5-b4b0f88b94a9.png)
 
 
