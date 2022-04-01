@@ -264,14 +264,15 @@ hist(df_filt2$G,breaks = 950,xlim = c(0,10),xlab = "G Distribution",main = "Hist
 plotQTLStats(SNPset = df_filt2, var = "nSNPs")
 ggsave(filename = "nSNPs.png",plot = last_plot())
 ```
-![snps](https://user-images.githubusercontent.com/93121277/158374828-5878811f-20c0-449c-8ac3-10d195bd3375.png)
+![Screenshot from 2022-04-01 15-20-34](https://user-images.githubusercontent.com/93121277/161271810-6709f553-1361-4f4d-a6f4-3f11eca4a8c9.png)
+
 
 ```r
 #Using QTLStats funciton plot Gprime Statistic with False Discovery Rate Threhshold as a third argument boolean operator as TRUE. The q value is used as FDR threshold null value is 0.05%.
 plotQTLStats(SNPset = df_filt, var = "Gprime", plotThreshold = TRUE, q = 0.01)
 ggsave(filename = "GPrime.png",plot = last_plot())
 ```
-![Gprime](https://user-images.githubusercontent.com/93121277/156785067-1253709f-b19d-4326-a4c3-8db8abf33052.png)
+![Screenshot from 2022-04-01 15-21-27](https://user-images.githubusercontent.com/93121277/161271924-e1e6319b-be94-440f-8898-76849c583edd.png)
 
 
 ```r
@@ -280,24 +281,24 @@ plotQTLStats(SNPset = df_filt2, var = "deltaSNP", plotIntervals  = TRUE)
 ggsave(filename = "DeltaSNPInterval.png",plot = last_plot())
 ```
 
-![deltasnp](https://user-images.githubusercontent.com/93121277/158375244-b509026f-8f57-4368-a18e-93711afe8661.png)
+![Screenshot from 2022-04-01 15-22-05](https://user-images.githubusercontent.com/93121277/161272031-d384dad1-c471-43bf-96d5-2e6cc05d2cfd.png)
 
 ```r
 #Finally with plotQTLStats plot negLog10Pval
 plotQTLStats(SNPset = df_filt2, var = "negLog10Pval",plotThreshold = TRUE,q=0.01)
 ggsave(filename = "negLog10Pval.png",plot = last_plot())
 ```
+![Screenshot from 2022-04-01 15-22-41](https://user-images.githubusercontent.com/93121277/161272116-144fb1c9-78a1-4c7c-9a7c-96b1a1e0b664.png)
 
-![neglog](https://user-images.githubusercontent.com/93121277/158375824-99eefc2d-1d09-4a25-926d-7a1d4a0e1340.png)
 
 ```r
 #Add subset argument to focus on particular chromosomes one, three, four, and six.
 #The reason is due to signficant QTL regions
-plotQTLStats(SNPset = df_filt2, var = "Gprime",plotThreshold = TRUE,q=0.01,subset = c("1","3","4","6"))
+plotQTLStats(SNPset = df_filt2, var = "Gprime",plotThreshold = TRUE,q=0.01,subset = c("Chr01","Chr03","Chr04","Chr06"))
 
 ```
+![Screenshot from 2022-04-01 15-24-01](https://user-images.githubusercontent.com/93121277/161272349-3c9bcf3e-553c-43a5-af5d-6b1e80e99658.png)
 
-![Gprime2](https://user-images.githubusercontent.com/93121277/158375088-768456af-870e-4ec3-9427-900ce6aa8ea7.png)
 
 
 # Export summary CSV
@@ -311,9 +312,9 @@ QTLTable(SNPset = df_filt, alpha = 0.01, export = TRUE, fileName = "my_BSA_QTL.c
 
 ![Screenshot from 2022-04-01 09-18-54](https://user-images.githubusercontent.com/93121277/161214771-b0ded302-846c-43c9-a8a4-a87b97423f63.png)
 
-``` r {r AlleleFreq,warning=FALSE}
+``` r
 #Use the function to plot allele frequencies per chromosome
-#Second argument size specifes size of scalar factor on nSNPs
+#Second argument size specifes size of scalar factor on nSNPs and if you have a relatively small SNP set .001 is a good startin point otherwise set to 1
 Obs_Allele_Freq(SNPSet = df_filt, size = .001)
 ```
 
