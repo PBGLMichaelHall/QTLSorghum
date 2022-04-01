@@ -313,14 +313,11 @@ QTLTable(SNPset = df_filt, alpha = 0.01, export = TRUE, fileName = "my_BSA_QTL.c
 
 ``` r {r AlleleFreq,warning=FALSE}
 #Use the function to plot allele frequencies per chromosome
-Obs_Allele_Freq(SNPSet = df_filt)
+#Second argument size specifes size of scalar factor on nSNPs
+Obs_Allele_Freq(SNPSet = df_filt, size = .001)
 ```
 
-![lb](https://user-images.githubusercontent.com/93121277/158377569-1b9183b6-2419-4eba-811d-7d95f9cc36ce.png)
-
-
-![FREQ1](https://user-images.githubusercontent.com/93121277/156783048-88f98c3c-4c89-4519-bf1b-7ed15b6b5dea.png)
-
+![Screenshot from 2022-04-01 12-38-33](https://user-images.githubusercontent.com/93121277/161247921-2fab6d12-6b11-433a-af3b-a5c969aabc8a.png)
 
 
 
