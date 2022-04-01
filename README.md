@@ -324,13 +324,17 @@ Obs_Allele_Freq(SNPSet = df_filt, size = .001)
 
 ``` r
 ##Use the function to investigate chromosomal region of interest
-Obs_Allele_Freq2(SNPSet = df_filt, ChromosomeValue = 4, threshold = .90)
+Obs_Allele_Freq2(SNPSet = df_filt, ChromosomeValue = "Chr04", threshold = .90)
 ```
-![lb2](https://user-images.githubusercontent.com/93121277/158378100-43ec8daa-ce2a-475b-8515-4a6f0195924e.png)
 
 
 
-![freq2](https://user-images.githubusercontent.com/93121277/158391011-7fcc46ae-bc6f-4f48-a11d-24ff59b8bdbe.png)
+
+![Screenshot from 2022-04-01 15-45-06](https://user-images.githubusercontent.com/93121277/161276197-a4378a1e-7437-40c9-8180-5619bedd2abe.png)
+
+
+![Screenshot from 2022-04-01 15-44-36](https://user-images.githubusercontent.com/93121277/161276189-686eadae-e152-472e-9c6d-034bb58b25f7.png)
+
 
 ################################################################################################################################################
 
