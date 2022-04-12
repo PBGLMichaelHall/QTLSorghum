@@ -671,6 +671,30 @@ plotQTLStats(SNPset = df_filt2, var = "Gprime",plotThreshold = TRUE,q=0.01,subse
 ```
 ![Screenshot from 2022-04-01 10-06-19](https://user-images.githubusercontent.com/93121277/161222339-dbbafc12-0631-4d22-b477-5f038256ee6e.png)
 
+# Lets take a look at SNPs per chromosome using rMVP Package
+```r
+sample<-"RiceColdTolerance"
+pathtosample <- "/home/michael/Desktop/RiceCold2/wGQ-Filt-freebayes~bwa~IRGSP-1.0~both-segregant_bulks~filtered-default.vcf"
+out<- paste0("mvp.",sample,".vcf")
+memo<-paste0(sample)
+dffile<-paste0("mvp.",sample,".vcf.geno.map")
+
+message("Making MVP data S1")
+MVP.Data(fileVCF=pathtosample,
+         #filePhe="Phenotype.txt",
+         fileKin=FALSE,
+         filePC=FALSE,
+         out=out
+)
+message("Reading MVP Data S1")
+df <- read.table(file = dffile, header=TRUE)
+message("Making SNP Density Plots")
+MVP.Report.Density(df[,c(1:3)], bin.size = 1000000, col = c("blue", "yellow", "red"), memo = memo, file.type = "jpg", dpi=300)
+
+```
+![Screenshot from 2022-04-12 14-34-01](https://user-images.githubusercontent.com/93121277/162963811-7fc215c6-ad65-4a01-b4b9-94aebed3e112.png)
+
+
 
 # Export summary CSV
 ```r
