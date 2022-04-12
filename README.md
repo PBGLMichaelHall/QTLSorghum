@@ -347,6 +347,9 @@ success <- 0:90
 # ns : Sample Size taken from Low Bulk
 # 2(ns)p1_star ~ Binomial(2(ns),p1)
 # p1 Expected Frequencies
+# Expected Frequencies:
+# E(n1) = E(n2) = E(n3) = E(n4) = C/2 = 110
+# We prefer for accuracy to have ns >> C >> 1
 plot(success, dbinom(success, size = 90, prob = .50), type = "h",main="Binomial Sampling from Diploid Orgainism from High Bulk",xlab="2(ns)(p1_STAR)",ylab="Density")
 ```
 ![Screenshot from 2022-04-12 13-59-19](https://user-images.githubusercontent.com/93121277/162958721-9ef36567-ce74-40d9-939f-4e8d32aaa6a4.png)
