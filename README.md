@@ -336,6 +336,121 @@ Obs_Allele_Freq2(SNPSet = df_filt, ChromosomeValue = "Chr04", threshold = .90)
 ![Screenshot from 2022-04-01 15-44-36](https://user-images.githubusercontent.com/93121277/161276189-686eadae-e152-472e-9c6d-034bb58b25f7.png)
 
 
+
+```r 
+setwd("/home/michael/Desktop/QTLseqr/extdata")
+# Theory and Analytical Framework of Sampling from BSA
+par(mfrow=c(1,1))
+# Define Ranges of Success
+success <- 0:90
+# The Difference between realized and Expected Frequencies 
+# ns : Sample Size taken from Low Bulk
+# 2(ns)p1_star ~ Binomial(2(ns),p1)
+# p1 Expected Frequencies
+plot(success, dbinom(success, size = 90, prob = .50), type = "h",main="Binomial Sampling from Diploid Orgainism from High Bulk",xlab="2(ns)(p1_STAR)",ylab="Density")
+```
+![Screenshot from 2022-04-12 13-59-19](https://user-images.githubusercontent.com/93121277/162958721-9ef36567-ce74-40d9-939f-4e8d32aaa6a4.png)
+
+
+```r
+
+# ns : Sample Size from High Bulk
+# 2(ns)p2_star ~ Binomial(2(ns),p2)
+# p2 Expected Frequencies
+success <- 0:76
+plot(success, dbinom(success, size = 76, prob = 0.5), type = "h",main="Binomial Sampling from Diploid Organism from Low Bulk",xlab="2(n2)(p2_STAR)",ylab="Density")
+```
+![Screenshot from 2022-04-12 14-00-01](https://user-images.githubusercontent.com/93121277/162958735-eb1213dd-c642-4aa0-8d71-aace95750693.png)
+
+
+
+```r
+
+
+# Read in the csv file from High bulk tt
+tt<-read.table(file = "D2_F2_tt.csv",header = TRUE,sep = ",")
+# Calculate average Coverage per SNP site
+mean(tt$DP)
+# Find REalized frequencies
+p1_STAR <- sum(tt$AD_ALT.) / sum(tt$DP)
+
+# Read in the csv file from Low Bulk TT
+TT<-read.table(file ="D2_F2_TT.csv",header = TRUE,sep=",")
+# Calculate average Coverage per SNP sit
+mean(TT$DP)
+# Find Realized frequencies
+p2_STAR <- sum(TT$AD_ALT.) / sum(TT$DP)
+# Take the average of the Averages
+C <-(mean(tt$DP)+mean(TT$DP))/2
+C<-round(C,0)
+# Find realized frequencies
+
+par(mfrow=c(1,1))
+#Define Ranges of Success (Allele Frequencies High and Low)
+success <- 0:100
+#n1|p1_star ~ Poisson(lambda)
+plot(success, dpois(success, lambda = C*(1-p1_STAR)), type = 'h',main="n1|p1_STAR ~ Poisson(C[1-p1_STAR])",xlab="n1|(n3/n1+n3)",ylab="Prob")
+```
+![Screenshot from 2022-04-12 14-00-53](https://user-images.githubusercontent.com/93121277/162958765-f401723a-8206-4f08-b8c5-9803692a0730.png)
+
+
+
+```r
+hist(TT$AD_REF., probability = TRUE,main="Histogram of Actually Realized n1 Values",xlab="n1")
+```
+![Screenshot from 2022-04-12 14-01-21](https://user-images.githubusercontent.com/93121277/162958788-3270f67f-9188-4b53-a5c2-c7d54a42c2c7.png)
+
+
+```r
+#n2|p2_star ~ Poisson(lambda)
+plot(success, dpois(success, lambda = C*(1-p2_STAR)), type='h', main="n2|p2_STAR ~ Poisson(C[[1-p2_STAR])",xlab="n2|(n4/n2+n4)",ylab="Prob")
+```
+![Screenshot from 2022-04-12 14-01-49](https://user-images.githubusercontent.com/93121277/162958802-90370961-fd00-4edb-8c32-1653513e4964.png)
+
+
+```r
+hist(tt$AD_REF., probability = TRUE, main = "Histogram of Actually Realized n2 Values",xlab="n2")
+```
+![Screenshot from 2022-04-12 14-02-17](https://user-images.githubusercontent.com/93121277/162958812-55bd09e6-312e-48ce-941a-00aa8ae5bb0b.png)
+
+```r
+#n3|p1_star ~ Poisson(lambda)
+plot(success, dpois(success, lambda = C*p1_STAR),type='h',main="n3|p1_STAR ~ Poisson(C[1-p1_STAR])",xlab="n3|(n3/n1+n3)",ylab="Prob")
+```
+![Screenshot from 2022-04-12 14-02-47](https://user-images.githubusercontent.com/93121277/162958869-7590934e-c56c-4de1-9a68-f673208a4c4f.png)
+
+
+```r
+hist(TT$AD_ALT., probability = TRUE, main="Histogram of Acutally Realized n3 Values",xlab="n3")
+```
+![Screenshot from 2022-04-12 14-03-11](https://user-images.githubusercontent.com/93121277/162958878-62c6147c-f8f0-4262-badd-f1020798d18c.png)
+
+
+```r
+#n4|p2_star ~ Poisson(lambda)
+plot(success, dpois(success, lambda = C*p2_STAR), type = 'h',main="n4|p2_STAR ~ Poisson(C[1-p2_STAR])",xlab="n4|n4/(n2+n4)",ylab="Prob")
+```
+![Screenshot from 2022-04-12 14-03-41](https://user-images.githubusercontent.com/93121277/162958898-87ac503a-8def-4194-a74b-9bb28c3c21b1.png)
+
+```r
+hist(tt$AD_ALT., probability = TRUE, main="Histogram of Acutally Realized n4 Values",xlab="n4")
+```
+![Screenshot from 2022-04-12 14-04-02](https://user-images.githubusercontent.com/93121277/162958908-03550b8f-4772-4d05-ac23-205e9dc30b3e.png)
+
+
+#Assuming average sequencing coverage expected values for n1,n2,n3,n4
+C/2
+
+
+# p2 >> p1 QTL is present
+# However, ns >> C >> 1 is NOT TRUE
+
+```
+
+
+
+
+
 ################################################################################################################################################
 
 # Rice QTL Analysis: High Bulk sample size of 430 Tolerant to cold environments and Low Bulk sample size of 385 Suseptilble to cold environments
