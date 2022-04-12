@@ -299,6 +299,9 @@ plotQTLStats(SNPset = df_filt2, var = "Gprime",plotThreshold = TRUE,q=0.01,subse
 ```
 ![Screenshot from 2022-04-01 15-24-01](https://user-images.githubusercontent.com/93121277/161272349-3c9bcf3e-553c-43a5-af5d-6b1e80e99658.png)
 
+# Use RMVP package to view SNPs on chromosomes/contigs
+![Screenshot from 2022-04-12 15-23-37](https://user-images.githubusercontent.com/93121277/162974419-235d4e8a-6285-4ba8-a41d-0eff23c44ea0.png)
+
 
 
 # Export summary CSV
